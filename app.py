@@ -56,5 +56,6 @@ def shell():
         datas = {'form': form, 'lines': lines}
     return render_template('shell.html', datas=datas)
 
-
-
+@app.route('/pyrun', methods=['GET', 'POST'])
+def pyrun():
+	return 'Comming soon'
