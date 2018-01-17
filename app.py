@@ -46,7 +46,7 @@ def osinfo():
 	return OSInfo()
 
 @app.route('/piplist')
-def piplist():
+def pip_list():
 	return piplist()
 
 @app.route('/shell', methods=['GET', 'POST'])
