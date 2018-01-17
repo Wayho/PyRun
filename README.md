@@ -5,23 +5,53 @@
 
 ## 部署
 
-可以通过 Lean 命令行方式部署，也可以直接通过源码部署方式部署。
-源码部署：在 LeanCloud 后台，云引擎处，选设置，把 git@github.com:Wayho/PyRun.git 填入代码库;
+可以通过 Lean 命令行方式部署，也可以在 LeanCloud 直接通过源码部署方式部署。
+
+#### 源码部署：
+
+在 LeanCloud 后台，云引擎处，选设置，把 git@github.com:Wayho/PyRun.git 填入代码库;
+
 把 Delopy Key 复制后在 https://github.com/Wayho/PyRun/settings/keys 处 Add deploy key;
+
 最后在在 LeanCloud 后台，云引擎处，选部署即可开始部署
 
 
 ## 已安装的依赖
 
-：
+gevent>=1.0.2,<2.0.0
 
-## 代码编辑
-：
+gevent-websocket>=0.9.5,<1.0.0
 
-## 运行
+leancloud>=2.0.0,<3.0.0
 
-：
+Werkzeug>=0.11.11,<1.0.0
 
+Flask>=0.10.1,<1.0.0
+
+Flask-Sockets>=0.1,<1.0
+
+
+requests>=2.13.0,<=2.18.4
+
+flask-wtf>=0.14.2
+
+lxml>=3.0.0, <=4.0.0
+
+numpy>=1.13.0
+
+pandas>=0.21.0
+
+BeautifulSoup==3.2.1
+
+BeautifulSoup4>=4.6.0
+
+python-dateutil>=2.6.1
+
+bokeh>=0.12.10
+
+
+## DEMO
+http://pyrun.leanapp.cn
 
 ## 相关文档
 
