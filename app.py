@@ -31,6 +31,23 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 ########## 如要使用中文，请确保以上四行代码存在 ##########
 
+# Standard library imports
+import time
+import random
+from datetime import datetime, timedelta
+
+# External imports
+import requests
+import lxml
+import numpy
+import BeautifulSoup
+import BeautifulSoup4
+import python-dateutil
+import bokeh
+
+# Local import
+from proxy import GetHtml
+
 print '欢迎使用PyRun'
 """
 
