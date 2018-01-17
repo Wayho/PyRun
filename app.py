@@ -50,6 +50,10 @@ import bokeh
 from proxy import GetHtml       # Local proxy requests
 
 print '欢迎使用PyRun'
+
+url = 'https://music.douban.com/chart'
+html =  GetHtml(url)
+print html
 """
 
 class CommentForm(FlaskForm):
