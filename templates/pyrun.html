@@ -1,0 +1,29 @@
+{#	注释：云端shell函数：	@engine.define('pyrun')		#}
+{#							def pyrun( cmd, **params ): #}
+{#	注释：python内调用方法：cloudfunc.run('pyrun', cmd=form.comment.data ) #}
+<!DOCTYPE HTML>
+<html>
+	<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>PyRun</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}" type="text/css">
+	</head>
+    <body>
+		<div id="formcenter">
+		<form method="POST" action="/pyrun" align=center>
+			{{ datas.get('form').csrf_token }}
+			<h3>PyRun --Run Python online</h3>
+			<p align=left>
+                {{ datas.get('form').comment(rows=50, cols=120) }}
+            </p>			
+			<p align=left>{{ datas.get('form').submit() }}</p>	
+		</form>		
+		</div>
+		<div id="container">
+		<h3>Run Result</h3>
+		{% for data in datas.get('lines') %}
+		<p>{{ data }}</p>
+		{% endfor %}
+    </div>
+    </body>
+</html>
