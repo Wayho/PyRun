@@ -14,10 +14,3 @@ def hello(**params):
         return 'Hello, LeanCloud!'
 
 
-@engine.before_save('Todo')
-def before_todo_save(todo):
-    content = todo.get('content')
-    if not content:
-        raise LeanEngineError('内容不能为空')
-    if len(content) >= 240:
-        todo.set('content', content[:240] + ' ...')
