@@ -26,31 +26,42 @@ def OSInfo():
         ret += show_python_info()
 
     ret += HTMLPrint('- - ' * 10)
-    ret += HTMLPrint('echo $PATH')
+    ret += HTMLPrint('$echo $PATH')
     retshell = shellcmd('echo $PATH')
     for s in retshell:
         ret += HTMLPrint(str((s.encode('utf-8'))))
 
     ret += HTMLPrint('- - ' * 10)
-    ret += HTMLPrint('pip list')
+    ret += HTMLPrint('$pip list')
     retshell = shellcmd('pip list')
     for s in retshell:
         ret += HTMLPrint(str((s.encode('utf-8'))))
 
     ret += HTMLPrint('- - ' * 10)
-    ret += HTMLPrint('python --version')
+    ret += HTMLPrint('$python --version')
     retshell = shellcmd('python --version')
     for s in retshell:
         ret += HTMLPrint(str((s.encode('utf-8'))))
 
     ret += HTMLPrint('- - ' * 10)
-    ret += HTMLPrint('ps aux')
+    ret += HTMLPrint('$ps aux')
     retshell = shellcmd('ps aux')
     for s in retshell:
         ret += HTMLPrint(str((s.encode('utf-8'))))
 
     ret += HTMLCode(None)
     return ret
+
+def piplist():
+	ret = HTMLCode( '已安装的依赖' )
+
+	ret += HTMLPrint( '$pip list' )
+	retshell = shellcmd( 'pip list' )
+	for s in retshell:
+		ret += HTMLPrint( str( (s.encode( 'utf-8' )) ) )
+
+	ret += HTMLCode( None )
+	return ret
 
 def show_os_all_info():
     '''打印os的全部信息'''
