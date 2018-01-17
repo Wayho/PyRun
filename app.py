@@ -1,9 +1,7 @@
 # coding: utf-8
 
 # Standard library imports
-import random
-import time
-from datetime import datetime, timedelta
+import codecs
 
 # External imports
 from flask import Flask
@@ -61,4 +59,18 @@ def shell():
 
 @app.route('/pyrun', methods=['GET', 'POST'])
 def pyrun():
-	return 'Comming soon'
+	form = CommentForm()
+	lines = [ u'Ready' ]
+	datas = {'form': form, 'lines': lines}
+	if form.validate_on_submit():
+		#print type(form.comment.data)
+		#print form.comment.data
+		Write_To_txt(form.comment.data)
+		lines = shellcmd( "python default.py" )
+		datas = {'form': form, 'lines': lines}
+	return render_template( 'pyrun.html', datas=datas )
+
+def Write_To_txt(text):
+	filepy = codecs.open("./default.py", "w", 'utf-8')
+	filepy.write(text)
+	filepy.close()
