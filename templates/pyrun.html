@@ -11,19 +11,17 @@
     <body>
 		<div id="formcenter">
 		<form method="POST" action="/pyrun" align=center>
-			{{ datas.get('form').csrf_token }}
+			{{ form.csrf_token }}
 			<h3>PyRun --Run Python online</h3>
 			<p align=left>
-                {{ datas.get('form').comment(rows=50, cols=120) }}
+                {{ form.comment_code(rows=30, cols=100) }}
             </p>			
-			<p align=left>{{ datas.get('form').submit() }}</p>	
+			<p align=left>{{ form.submit() }}</p>
 		</form>		
 		</div>
 		<div id="container">
-		<h3>Run Result</h3>
-		{% for data in datas.get('lines') %}
-		<p>{{ data }}</p>
-		{% endfor %}
+			<p>{{ form.comment_out.label }}</p>
+			<p>{{ form.comment_out(rows=10, cols=100) }}</p>
     </div>
     </body>
 </html>
