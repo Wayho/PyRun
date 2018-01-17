@@ -3,6 +3,14 @@
 一个运行在 LeanEngine 的 Python 应用。
 可以在线运行 Python 程序，且已安装了常见的依赖。
 
+## 部署
+
+可以通过 Lean 命令行方式部署，也可以直接通过源码部署方式部署。
+源码部署：在 LeanCloud 后台，云引擎处，选设置，把 git@github.com:Wayho/PyRun.git 填入代码库;
+把 Delopy Key 复制后在 https://github.com/Wayho/PyRun/settings/keys 处 Add deploy key;
+最后在在 LeanCloud 后台，云引擎处，选部署即可开始部署
+
+
 ## 已安装的依赖
 
 ：
