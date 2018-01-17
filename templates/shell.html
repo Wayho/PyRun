@@ -1,0 +1,30 @@
+{#	注释：云端shell函数：	@engine.define('shell')		#}
+{#							def shell( cmd, **params ): #}
+{#	注释：python内调用方法：cloudfunc.run('shell', cmd=form.comment.data ) #}
+<!DOCTYPE HTML>
+<html>
+	<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>云端Shell</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}" type="text/css">
+	</head>
+    <body>
+		<div id="formcenter">
+		<form method="POST" action="/shell" align=center>
+			{{ datas.get('form').csrf_token }}
+			<p align=center>云端Shell</p>
+			<p align=left>
+                输入命令+参数<br>
+                {{ datas.get('form').comment(rows=1, cols=50) }}
+            </p>			
+			<p align=left>{{ datas.get('form').submit() }}</p>	
+		</form>		
+		</div>
+		<div id="container">
+		<h2>Shell Result</h2>
+		{% for data in datas.get('lines') %}
+		<p>{{ data }}</p>
+		{% endfor %}
+    </div>
+    </body>
+</html>
