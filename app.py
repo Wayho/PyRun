@@ -39,14 +39,15 @@ from datetime import datetime, timedelta
 # External imports
 import requests
 import lxml
+import html5lib
 import numpy
-import BeautifulSoup
-import BeautifulSoup4
-import python-dateutil
+#import BeautifulSoup           # BeautifulSoup3
+from bs4 import BeautifulSoup   # BeautifulSoup4
+import dateutil                 #python-dateutil
 import bokeh
 
 # Local import
-from proxy import GetHtml
+from proxy import GetHtml       # Local proxy requests
 
 print '欢迎使用PyRun'
 """
