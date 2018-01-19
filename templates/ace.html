@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ACE Autocompletion demo</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+    
+    #editor { 
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    #statusBar {
+        margin: 0;
+        padding: 0;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 20px;
+        background-color: rgb(245, 245, 245);
+        color: gray;
+    }
+    .ace_status-indicator {
+        color: gray;
+        position: absolute;
+        right: 0;
+        border-left: 1px solid;
+    }
+  </style>
+</head>
+<body>
+
+<pre id="editor"></pre>
+<div id="statusBar">...............statusBar</div>
+
+<!-- load ace -->
+<script src="../static/ace/src-min-noconflict/ace.js"></script>
+<!-- load ace language tools -->
+<script src="../static/ace/src-min-noconflict/ext-language_tools.js"></script>
+<!-- load ace statusbar extension -->
+<script src="../static/ace/src-min-noconflict/ext-statusbar.js"></script>
+<script>
+    // trigger extension
+    ace.require("ace/ext/language_tools");
+
+    var editor = ace.edit("editor");
+    editor.session.setMode("ace/mode/python");		//代码模式
+    editor.setTheme("ace/theme/chrome");
+
+    // enable autocompletion and snippets
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true 				//自动完成
+    });
+
+	editor.setFontSize(24);
+    editor.setOption("selectionStyle", "text");		//行选择方式,"line","text",，默认"line"
+
+    editor.getSession().setUseWrapMode(true);		//代码折叠，默认false
+    editor.renderer.setShowPrintMargin(true);		//显示打印边界，默认false
+    editor.setHighlightActiveLine(false);			//强调所选行，默认true
+    editor.setHighlightSelectedWord(true);			//全文强调所选词，默认true
+
+	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
+    // create a simple selection status indicator
+    var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
+</script>
+
+
+<script src="./static/pyeditor/show_python_source.js"></script>
+</body>
+</html>
