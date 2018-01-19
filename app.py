@@ -45,16 +45,18 @@ import pandas
 #import BeautifulSoup           # BeautifulSoup3
 from bs4 import BeautifulSoup   # BeautifulSoup4
 import dateutil                 #python-dateutil
-import bokeh
 
 # Local import
 from proxy import GetHtml       # Local proxy requests
 
-print '欢迎使用PyRun'
+def Get_Douban():
+	print '欢迎使用PyRun'
 
-url = 'https://music.douban.com/chart'
-html =  GetHtml(url)
-print html
+	url = 'https://music.douban.com/chart'
+	html =  GetHtml(url)
+	print html
+
+Get_Douban()
 """
 
 class CommentForm(FlaskForm):
