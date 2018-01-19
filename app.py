@@ -41,6 +41,7 @@ import requests
 import lxml
 import html5lib
 import numpy
+import pandas
 #import BeautifulSoup           # BeautifulSoup3
 from bs4 import BeautifulSoup   # BeautifulSoup4
 import dateutil                 #python-dateutil
@@ -66,6 +67,9 @@ class CommentForm(FlaskForm):
 def index():
 	return render_template('index.html')
 
+@app.route('/ace')
+def ace():
+	return render_template('ace.html')
 
 @sockets.route('/echo')
 def echo_socket(ws):
