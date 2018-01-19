@@ -14,4 +14,3 @@ pandas>=0.21.0
 BeautifulSoup==3.2.1
 BeautifulSoup4>=4.6.0
 python-dateutil>=2.6.1
-bokeh>=0.12.10
