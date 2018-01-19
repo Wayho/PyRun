@@ -18,7 +18,6 @@ import pandas
 #import BeautifulSoup           # BeautifulSoup3
 from bs4 import BeautifulSoup   # BeautifulSoup4
 import dateutil                 #python-dateutil
-import bokeh
 
 # Local import
 from proxy import GetHtml       # Local proxy requests
