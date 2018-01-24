@@ -8,6 +8,8 @@ import codecs
 from flask import Flask
 from flask import render_template
 from flask_sockets import Sockets
+from flask import jsonify
+from flask import request
 
 from flask_wtf import FlaskForm  # requirements Flask-WTF==0.14.2
 from wtforms import StringField, PasswordField, TextAreaField, SubmitField, validators  # requirements WTForms==2.1
@@ -23,61 +25,52 @@ sockets = Sockets(app)
 WTF_CSRF_ENABLED = True
 app.config['SECRET_KEY'] = '592636cf2f301e0057b87375'
 
-STR_CODE_DEFAULT = \
-u"""
-# coding: utf-8
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-########## 如要使用中文，请确保以上四行代码存在 ##########
+STR_CODE_PATH = './code/'
+STR_PYTHON = 'python '
+STR_DEFAULT_FILENAME = 'default.py'
 
-# Standard library imports
-import time
-import random
-from datetime import datetime, timedelta
+########## Base Functions ##################
+def Save_To_File(filename,text):
+	filepy = codecs.open( STR_CODE_PATH + filename, 'w', 'utf-8')
+	filepy.write(text)
+	filepy.close()
 
-# External imports
-import requests
-import lxml
-import html5lib
-import numpy
-import pandas
-#import BeautifulSoup           # BeautifulSoup3
-from bs4 import BeautifulSoup   # BeautifulSoup4
-import dateutil                 #python-dateutil
+def Load_From_File(filename):
+	filepy = codecs.open( STR_CODE_PATH + filename, 'r', 'utf-8')
+	text = filepy.read()
+	filepy.close()
+	return text
+###############################################
 
-# Local import
-from proxy import GetHtml       # Local proxy requests
+@app.route('/', methods=['GET', 'POST'])
+def pyrun():
+	if request.method == 'POST':
+		action = request.form.get('action', 'RUN', type=str)
+		if('RUN'==action):
+			code = request.form.get('code', '#None', type=unicode)
+			filename = 'test.py'
+			Save_To_File(filename, code)
+			# return the output back to the python script
+			str_command = STR_PYTHON + STR_CODE_PATH + filename
+			popen = subprocess.Popen([str_command], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			output = popen.communicate()[0]  # <type 'str'>
+			#output = output.decode('utf-8')
+		elif('NEW'==action):
+			code = Load_From_File(STR_DEFAULT_FILENAME)
+			output = 'New'
+		elif('OPEN'==action):
+			code = Load_From_File(STR_DEFAULT_FILENAME)
+			output = 'Open'
+		elif('SAVE'==action):
+			code = request.form.get('code', '#None', type=unicode)
+			output = 'Save'
+		else:
+			code = request.form.get('code', '#None', type=unicode)
+			output = 'Error'
 
-def Get_Douban():
-	print '欢迎使用PyRun'
-
-	url = 'https://music.douban.com/chart'
-	html =  GetHtml(url)
-	print html
-
-Get_Douban()
-"""
-
-class CommentForm(FlaskForm):
-	comment = TextAreaField("Comment", validators=[validators.DataRequired()])
-	# comment = TextAreaField("Comment", validators=[validators.Length(min=1,max=128)])
-	submit = SubmitField(u'确定')
-
-
-@app.route('/')
-def index():
-	return render_template('index.html')
-
-@app.route('/ace')
-def ace():
-	return render_template('ace.html')
-
-@sockets.route('/echo')
-def echo_socket(ws):
-	while True:
-		message = ws.receive()
-		ws.send(message)
+		return jsonify(code=code,output=output)
+	else:
+		return render_template('pyrun_ace.html')
 
 @app.route('/osinfo')
 def osinfo():
@@ -86,6 +79,12 @@ def osinfo():
 @app.route('/piplist')
 def pip_list():
 	return piplist()
+
+################ Shell #################
+class CommentForm(FlaskForm):
+	comment = TextAreaField("Comment", validators=[validators.DataRequired()])
+	# comment = TextAreaField("Comment", validators=[validators.Length(min=1,max=128)])
+	submit = SubmitField(u'确定')
 
 @app.route('/shell', methods=['GET', 'POST'])
 def shell():
@@ -98,26 +97,57 @@ def shell():
 		datas = {'form': form, 'lines': lines}
 	return render_template('shell.html', datas=datas)
 
+################### 使用Flask表单，已废弃 ###################################
 class PyRunForm(FlaskForm):
 	comment_code = TextAreaField("Code", validators=[validators.DataRequired()])
-	submit = SubmitField(u'确定')
+	submit = SubmitField(u'Run')
 	comment_out = TextAreaField( "Output" )
 
 @app.route('/pyrun', methods=['GET', 'POST'])
-def pyrun():
+# 使用Flask表单，已废弃
+def pyrun_FlaskForm():
 	form = PyRunForm()
 	if form.validate_on_submit():
 		#pass
-		Write_To_py(form.comment_code.data)
+		filename = 'test.py'
+		Save_To_File( filename, form.comment_code.data)
 		# return the output back to the python script
-		output = subprocess.Popen( [ "python default.py" ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
-		output = output.communicate()[ 0 ]      #<type 'str'>
+		str_command = STR_PYTHON + STR_CODE_PATH + filename
+		popen = subprocess.Popen( [ str_command ], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT )
+		output = popen.communicate()[ 0 ]      #<type 'str'>
 		form.comment_out.data = output.decode('utf-8')
 	else:
-		form.comment_code.data = STR_CODE_DEFAULT
-	return render_template( 'pyrun.html', form=form )
+		form.comment_code.data = Load_From_File(STR_DEFAULT_FILENAME)
+	return render_template( 'pyrun_flaskform.html', form=form )
 
-def Write_To_py(text):
-	filepy = codecs.open("./default.py", "w", 'utf-8')
-	filepy.write(text)
-	filepy.close()
+
+########### jQuery Example ###################
+@app.route('/_add_numbers')
+def add_numbers():
+    """Add two numbers server side, ridiculous but well..."""
+    a = request.args.get('a', 0, type=int)
+    b = request.args.get('b', 0, type=int)
+    return jsonify(result=a + b)
+
+@app.route('/jquery')
+def jquery():
+	return render_template('jquery.html')
+
+@app.route('/ajaxform', methods=['POST', 'GET'])
+def ajaxform():
+	if request.method == 'POST':
+		n = [request.form.get(x, 0, type=float) for x in {'n1','n2','n3'}]
+		return jsonify(max=max(n), min=min(n))
+	else:
+		return render_template('ajaxform.html')
+
+################# A Static ACE Editor ###########################
+@app.route('/ace')
+def ace():
+	return render_template('ace.html')
+
+@sockets.route('/echo')
+def echo_socket(ws):
+	while True:
+		message = ws.receive()
+		ws.send(message)
