@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ACE Autocompletion demo</title>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css" media="screen">
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border-radius: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ebebeb;
+        }
+
+        #container {
+            overflow: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0px;
+        }
+
+        #container_editor {
+            width: 99.9%;
+            height: 70%;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid;
+            border-color:#ebebeb;
+        }
+
+        #container_output {
+            width: 99.9%;
+            height: 25%;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+        }
+
+        #container_top {
+            width: 99.9%;
+            height: 24px;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+            float: top;
+        }
+
+        #container_toolsbar {
+            width: 59.9%;
+            height: 99.9%;
+            overflow: auto;
+            position: relative;
+            background-color: #ebebeb;
+            color: gray;
+            float: left;
+        }
+
+        #container_statusbar {
+            width: 40%;
+            height: 99.9%;
+            overflow: auto;
+            position: relative;
+            background-color: #ebebeb;
+            color: gray;
+            float: left;
+        }
+
+        #ace_editor,
+        #ace_output,
+        #ace_statusBar{
+            height: 99.9%;
+            width: 99.9%;
+        }
+
+        #ace_toolsBar{
+            padding-left:48px;
+            height: 99.9%;
+            width: 90%;
+            font-size:20px;
+        }
+
+        .ace_status-indicator {
+            color: gray;
+            position: absolute;
+            right: 0;
+            border-left: 1px solid;
+        }
+  </style>
+</head>
+
+<body>
+        <div id="container">
+			<div id="container_top">
+                <div id="container_toolsbar">
+                    <div id="ace_toolsBar">
+                        <i class="fa fa-play fa-1g" onclick="return submit_run()">Run</i>
+                        <i class="fa fa-file-o fa-1g" onclick="return submit_new()">New</i>
+                        <i class="fa fa-folder-open-o fa-1g" onclick="return submit_open()">Open</i>
+                        <i class="fa fa-save fa-1g" onclick="return submit_save()">Save</i>
+                        <i class="fa fa-plus-square fa-1g" onclick="submit_font()">Font</i>
+                        <a href="shell" target="_blank"><i class="fa fa-linux fa-1g">Shell</i></a>
+                        <a href="osinfo" target="_blank"><i class="fa fa-desktop fa-1g">Info</i></a>
+                        <a href="piplist" target="_blank"><i class="fa fa-inbox fa-1g">Lib</i></a>
+                        <a href="help" target="_blank"><i class="fa fa-hand-o-right fa-1g">Help</i></a>
+                    </div>
+                </div>
+                <div id="container_statusbar">
+                    <div id="ace_statusBar">PyRun -- Run Python online</div>
+                </div>
+            </div>
+
+            <div id="container_editor">
+                <div id="ace_editor"></div>
+            </div>
+
+            <div id="container_output">
+                <div id="ace_output"></div>
+            </div>
+        </div>
+
+<!-- load ace
+<script src="../static/ace/src-min-noconflict/ace.js"></script>
+<script src="../static/ace/src-min-noconflict/ext-language_tools.js"></script>
+<script src="../static/ace/src-min-noconflict/ext-statusbar.js"></script>
+-->
+<script src="https://cdn.bootcss.com/ace/1.2.9/ace.js"></script>
+<script src="https://cdn.bootcss.com/ace/1.2.9/ext-language_tools.js"></script>
+<script src="https://cdn.bootcss.com/ace/1.2.9/ext-statusbar.js"></script>
+
+<script>
+    //页面载入后，对ace_editor、ace_output、ace_statusBar初始化
+    ace.require("ace/ext/language_tools");
+
+    var ace_editor = ace.edit("ace_editor");
+    ace_editor.session.setMode("ace/mode/python");		//代码模式
+    ace_editor.setTheme("ace/theme/chrome");
+
+    // enable autocompletion and snippets
+    ace_editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true 				//自动完成
+    });
+
+    ace_editor.focus();
+
+	ace_editor.setFontSize(14);
+	ace_editor.getSession().setTabSize(4);
+    ace_editor.setOption("selectionStyle", "line");		//行选择方式,"line","text",，默认"line"
+
+    ace_editor.getSession().setUseWrapMode(true);		//代码折叠，默认false
+    ace_editor.renderer.setShowPrintMargin(true);		//显示打印边界，默认false
+    ace_editor.renderer.setShowGutter(true);            //显示行号，默认true
+    ace_editor.setHighlightActiveLine(false);			//强调所选行，默认true
+    ace_editor.setHighlightSelectedWord(true);			//全文强调所选词，默认true
+    ace_editor.setValue("#ACE editor\nprint 'Hello'");			//text
+
+    var ace_output = ace.edit('ace_output');
+    ace_output.setTheme('ace/theme/chrome');
+    ace_output.getSession().setMode('ace/mode/text');
+    ace_output.setFontSize(14);
+    ace_output.renderer.setShowPrintMargin(false);
+    ace_output.renderer.setShowGutter(false);
+    ace_output.setValue("#ACE Output");			        //text
+
+	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
+    // create a simple selection status indicator
+    var ace_statusBar = new StatusBar(ace_editor, document.getElementById("ace_statusBar"));
+</script>
+
+<!--
+ace_editor数据回传
+ace_output数据接收
+-->
+<script type=text/javascript src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.0.min.js"></script>
+<script type=text/javascript>
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+<script type="text/javascript">
+    // 响应工具栏按钮，在后台通过request.form.get('code', '#None', type=unicode)获取传回的值
+    function submit_run(){
+        $.ajax({
+            type: 'post',
+            url: $SCRIPT_ROOT,
+            dataType: 'json',
+            data:{
+                'action':'RUN',
+                'code': ace_editor.getValue()
+            },
+            error: function(xhr, err){
+                alert('请求失败，原因可能是：' + err + '！')
+            },
+            success: function(data, textStatus){
+                ace_output.setValue(data.output);
+            }
+        });
+        return false
+    }
+    function submit_new(){
+        $.ajax({
+            type: 'post',
+            url: $SCRIPT_ROOT,
+            dataType: 'json',
+            data:{
+                'action':'NEW'
+            },
+            error: function(xhr, err){
+                alert('请求失败，原因可能是：' + err + '！')
+            },
+            success: function(data, textStatus){
+                ace_editor.setValue(data.code);
+                ace_output.setValue(data.output);
+            }
+        });
+        return false
+    }
+    function submit_open(){
+        $.ajax({
+            type: 'post',
+            url: $SCRIPT_ROOT,
+            dataType: 'json',
+            data:{
+                'action':'OPEN'
+            },
+            error: function(xhr, err){
+                alert('请求失败，原因可能是：' + err + '！')
+            },
+            success: function(data, textStatus){
+                ace_editor.setValue(data.code);
+                ace_output.setValue(data.output);
+            }
+        });
+        return false
+    }
+    function submit_save(){
+        $.ajax({
+            type: 'post',
+            url: $SCRIPT_ROOT,
+            dataType: 'json',
+            data:{
+                'action':'SAVE',
+                'code': ace_editor.getValue()
+            },
+            error: function(xhr, err){
+                alert('请求失败，原因可能是：' + err + '！')
+            },
+            success: function(data, textStatus){
+            }
+        });
+        return false
+    }
+    function submit_font(){
+        var fontsize = ace_editor.getFontSize();
+        ace_editor.setFontSize(fontsize+1);
+    }
+
+</script>
+
+</body>
+</html>
