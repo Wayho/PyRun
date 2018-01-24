@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+#popupcontent{
+position: absolute;
+visibility: hidden;
+overflow: hidden;
+border:1px solid #CCC;
+background-color:#F9F9F9;
+border:1px solid #333;
+padding:5px;
+}
+    </style>
+    <script>
+var baseText = null;
+
+function showPopup(w,h){
+var popUp = document.getElementById("popupcontent");
+popUp.style.top = (document.body.clientHeight-150) + "px";
+popUp.style.left = "0px";
+popUp.style.width = (document.body.clientWidth-200) + "px";
+popUp.style.height = "150px";
+//if (baseText == null) baseText = popUp.innerHTML;
+//popUp.innerHTML = baseText + "<div id=\"statusbar\"><button onclick=\"hidePopup();\">Close window</button></div>";
+//var sbar = document.getElementById("statusbar");
+//sbar.style.marginTop = (parseInt(h)-40) + "px";
+popUp.style.visibility = "visible";
+}
+
+function hidePopup(){
+var popUp = document.getElementById("popupcontent");
+popUp.style.visibility = "hidden";
+}
+
+
+    </script>
+</head>
+<body>
+    <a href="#" onclick="showPopup(300,150);" >Open popup</a>
+    <div id="popupcontent">这是一个DIV弹窗效果!相关内容如下
+    <iframe src="Agree.html" width="300px" height="50px;" scroll="auto"></iframe>
+    <div id="statusbar"><button onclick="hidePopup();">Close window</button></div>
+    </div>
+
+</body>
+</html>
