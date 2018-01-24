@@ -83,7 +83,7 @@ def pip_list():
 @app.route('/code')
 def codeoftest():
 	code =  Load_From_File('test.py')
-	print code
+	print code.encode('utf-8')
 	return code
 
 ################ Shell #################
