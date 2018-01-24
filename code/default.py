@@ -24,7 +24,6 @@ from proxy import GetHtml       # Local proxy requests
 
 def Get_Douban():
 	print '欢迎使用PyRun'
-
 	url = 'https://music.douban.com/chart'
 	html =  GetHtml(url)
 	print html
