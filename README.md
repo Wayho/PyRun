@@ -47,8 +47,6 @@ BeautifulSoup4>=4.6.0
 
 python-dateutil>=2.6.1
 
-bokeh>=0.12.10
-
 
 ## DEMO
 http://pyrun.leanapp.cn
@@ -60,3 +58,7 @@ http://pyrun.leanapp.cn
 * [Python SDK API](https://leancloud.cn/docs/api/python/index.html)
 * [命令行工具详解](https://leancloud.cn/docs/cloud_code_commandline.html)
 * [LeanEngine FAQ](https://leancloud.cn/docs/cloud_code_faq.html)
+* [ACE Editor](https://github.com/ajaxorg/ace-builds)
+* [Flask 如何响应 JSON 数据](https://www.tuicool.com/articles/6vYbU3)
+* [JQuery Dialog](http://jqueryui.com/dialog/#modal-form)
+* [Font Awesome 图标字体库和CSS框架](http://fontawesome.dashgame.com/)
