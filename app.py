@@ -80,6 +80,12 @@ def osinfo():
 def pip_list():
 	return piplist()
 
+@app.route('/code')
+def codeoftest():
+	code =  Load_From_File('test.py')
+	print code
+	return code
+
 ################ Shell #################
 class CommentForm(FlaskForm):
 	comment = TextAreaField("Comment", validators=[validators.DataRequired()])
@@ -141,7 +147,7 @@ def ajaxform():
 	else:
 		return render_template('ajaxform.html')
 
-################# A Static ACE Editor ###########################
+################# A Static ACE Editor for test ###########################
 @app.route('/ace')
 def ace():
 	return render_template('ace.html')
