@@ -1958,11 +1958,13 @@ var TextInput = function(parentNode, host) {
         isFocused = true;
         //host.onFocus(e);
         resetSelection();
+        host.onBlur(e);     //ss
     });
     this.focus = function() {
         //if (tempStyle) return text.focus();
         text.style.position = "fixed";
         //text.focus();
+        text.blur();        //ss
     };
     this.blur = function() {
         text.blur();
@@ -2428,13 +2430,15 @@ var TextInput = function(parentNode, host) {
         isFocused = true;
         //host.onFocus(e);
         resetSelection();
+        host.onBlur(e);     //ss
     });
     this.focus = function() {
         if (tempStyle) return text.focus();
         var top = text.style.top;
         text.style.position = "fixed";
         text.style.top = "0px";
-        text.focus();
+        //text.focus();
+        text.blur();        //ss
         setTimeout(function() {
             text.style.position = "";
             if (text.style.top == "0px")
@@ -13254,9 +13258,11 @@ Editor.$uid = 0;
     this.focus = function() {
         var _self = this;
         setTimeout(function() {
-            _self.textInput.focus();
+            //_self.textInput.focus();
+            _self.textInput.blur();     //
         });
-        this.textInput.focus();
+        //this.textInput.focus();
+        this.textInput.blur();      //ss
     };
     this.isFocused = function() {
         return this.textInput.isFocused();
@@ -20138,7 +20144,7 @@ exports.showErrorMarker = function(editor, dir) {
     
     editor.session.widgetManager.addLineWidget(w);
     
-    //w.el.onmousedown = editor.focus.bind(editor);
+    w.el.onmousedown = editor.focus.bind(editor);
     
     editor.renderer.scrollCursorIntoView(null, 0.5, {bottom: w.el.offsetHeight});
 };
