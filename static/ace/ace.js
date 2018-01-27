@@ -1960,9 +1960,9 @@ var TextInput = function(parentNode, host) {
         resetSelection();
     });
     this.focus = function() {
-        if (tempStyle) return text.focus();
+        //if (tempStyle) return text.focus();
         text.style.position = "fixed";
-        text.focus();
+        //text.focus();
     };
     this.blur = function() {
         text.blur();
@@ -20138,7 +20138,7 @@ exports.showErrorMarker = function(editor, dir) {
     
     editor.session.widgetManager.addLineWidget(w);
     
-    w.el.onmousedown = editor.focus.bind(editor);
+    //w.el.onmousedown = editor.focus.bind(editor);
     
     editor.renderer.scrollCursorIntoView(null, 0.5, {bottom: w.el.offsetHeight});
 };
