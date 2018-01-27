@@ -1929,6 +1929,7 @@ var TextInput = function(parentNode, host) {
     var text = dom.createElement("textarea");
     text.className = useragent.isIOS ? "ace_text-input ace_text-input-ios" : "ace_text-input";
 
+
     if (useragent.isTouchPad)
         text.setAttribute("x-palm-disable-auto-cap", true);
 
@@ -1956,15 +1957,13 @@ var TextInput = function(parentNode, host) {
     });
     event.addListener(text, "focus", function(e) {
         isFocused = true;
-        //host.onFocus(e);
+        host.onFocus(e);
         resetSelection();
-        host.onBlur(e);     //ss
     });
     this.focus = function() {
-        //if (tempStyle) return text.focus();
+        if (tempStyle) return text.focus();
         text.style.position = "fixed";
-        //text.focus();
-        text.blur();        //ss
+        text.focus();
     };
     this.blur = function() {
         text.blur();
@@ -2018,7 +2017,7 @@ var TextInput = function(parentNode, host) {
 
     resetValue();
     if (isFocused)
-        ;//host.onFocus();
+        host.onFocus();
 
 
     var isAllSelected = function(text) {
@@ -2404,6 +2403,7 @@ var TextInput = function(parentNode, host) {
     
     var text = dom.createElement("textarea");
     text.className = "ace_text-input";
+    text.id = "ace_editor_input";
 
     text.setAttribute("wrap", "off");
     text.setAttribute("autocorrect", "off");
@@ -2428,17 +2428,15 @@ var TextInput = function(parentNode, host) {
     });
     event.addListener(text, "focus", function(e) {
         isFocused = true;
-        //host.onFocus(e);
+        host.onFocus(e);
         resetSelection();
-        host.onBlur(e);     //ss
     });
     this.focus = function() {
         if (tempStyle) return text.focus();
         var top = text.style.top;
         text.style.position = "fixed";
         text.style.top = "0px";
-        //text.focus();
-        text.blur();        //ss
+        text.focus();
         setTimeout(function() {
             text.style.position = "";
             if (text.style.top == "0px")
@@ -2497,7 +2495,7 @@ var TextInput = function(parentNode, host) {
 
     resetValue();
     if (isFocused)
-        ;//host.onFocus();
+        host.onFocus();
 
 
     var isAllSelected = function(text) {
@@ -13258,11 +13256,9 @@ Editor.$uid = 0;
     this.focus = function() {
         var _self = this;
         setTimeout(function() {
-            //_self.textInput.focus();
-            _self.textInput.blur();     //
+            _self.textInput.focus();
         });
-        //this.textInput.focus();
-        this.textInput.blur();      //ss
+        this.textInput.focus();
     };
     this.isFocused = function() {
         return this.textInput.isFocused();
@@ -13273,17 +13269,17 @@ Editor.$uid = 0;
     this.onFocus = function(e) {
         if (this.$isFocused)
             return;
-        //this.$isFocused = true;
-        //this.renderer.showCursor();
-        //this.renderer.visualizeFocus();
+        this.$isFocused = true;
+        this.renderer.showCursor();
+        this.renderer.visualizeFocus();
         //this._emit("focus", e);       //uneable sys keyboard fo mobile
     };
     this.onBlur = function(e) {
         if (!this.$isFocused)
             return;
-        //this.$isFocused = false;
-        //this.renderer.hideCursor();
-        //this.renderer.visualizeBlur();
+        this.$isFocused = false;
+        this.renderer.hideCursor();
+        this.renderer.visualizeBlur();
         //this._emit("blur", e);
     };
 
