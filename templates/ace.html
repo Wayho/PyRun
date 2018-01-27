@@ -4,29 +4,84 @@
   <meta charset="UTF-8">
   <title>ACE Autocompletion demo</title>
   <style type="text/css" media="screen">
-    body {
-        overflow: hidden;
-    }
-    
-    #editor { 
-        margin: 0;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-    }
-    #statusBar {
+    * {
         margin: 0;
         padding: 0;
+        outline: none;
+        border-radius: 0;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        background-color: #ebebeb;
+    }
+
+    #container {
+        overflow: auto;
         position: absolute;
+        bottom: 0;
         left: 0;
         right: 0;
-        bottom: 0;
-        height: 20px;
-        background-color: rgb(245, 245, 245);
-        color: gray;
+        top: 0px;
     }
+
+    #container_editor {
+        width: 99.9%;
+        height: 70%;
+        overflow: auto;
+        position: relative;
+        background-color: #fff;
+        border: 1px solid;
+        border-color:#ebebeb;
+    }
+
+    #container_output {
+        width: 99.9%;
+        height: 27%;
+        overflow: auto;
+        position: relative;
+        background-color: #fff;
+    }
+
+    #container_top {
+        width: 99.9%;
+        height: 20px;
+        overflow: auto;
+        position: relative;
+        background-color: #fff;
+        float: top;
+    }
+
+    #container_toolsbar {
+        width: 69.9%;
+        height: 99.9%;
+        overflow: auto;
+        position: relative;
+        background-color: #ebebeb;
+        color: gray;
+        float: left;
+    }
+
+    #container_statusbar {
+        width: 30%;
+        height: 99.9%;
+        overflow: auto;
+        position: relative;
+        background-color: #ebebeb;
+        color: gray;
+        float: left;
+    }
+
+    #ace_editor,
+    #ace_output,
+    #ace_statusBar{
+        height: 99.9%;
+        width: 99.9%;
+    }
+
     .ace_status-indicator {
         color: gray;
         position: absolute;
@@ -36,11 +91,30 @@
   </style>
 </head>
 <body>
+    <div id="container">
+        <div id="container_top">
+            <div id="container_toolsbar">
+                <div id="ace_toolsBar"> Tools</div>
+            </div>
+            <div id="container_statusbar">
+                <div id="ace_statusBar"> PyRun -- Run Python online</div>
+            </div>
+        </div>
+        <div id="container_editor">
+            <div id="ace_editor"></div>
+        </div>
+        <div id="container_output">
+            <div id="ace_output"></div>
+        </div>
 
-<pre id="editor"></pre>
-<div id="statusBar">...............statusBar</div>
+
+    </div>
+
+
 
 <!-- load ace
+<pre id="ace_editor"></pre>
+    <div id="ace_statusBar">...............statusBar</div>
 <script src="../static/ace/src-min-noconflict/ace.js"></script>
 <script src="../static/ace/src-min-noconflict/ext-language_tools.js"></script>
 <script src="../static/ace/src-min-noconflict/ext-statusbar.js"></script>
@@ -48,36 +122,57 @@
 <script src="https://cdn.bootcss.com/ace/1.2.9/ace.js"></script>
 <script src="https://cdn.bootcss.com/ace/1.2.9/ext-language_tools.js"></script>
 <script src="https://cdn.bootcss.com/ace/1.2.9/ext-statusbar.js"></script>
-	
+
 <script>
     // trigger extension
     ace.require("ace/ext/language_tools");
 
-    var editor = ace.edit("editor");
-    editor.session.setMode("ace/mode/python");		//代码模式
-    editor.setTheme("ace/theme/chrome");
+    var ace_editor = ace.edit("ace_editor");
+    ace_editor.session.setMode("ace/mode/python");		//代码模式
+    ace_editor.setTheme("ace/theme/chrome");
 
     // enable autocompletion and snippets
-    editor.setOptions({
+    ace_editor.setOptions({
         enableBasicAutocompletion: true,
         enableSnippets: true,
         enableLiveAutocompletion: true 				//自动完成
     });
 
-	editor.setFontSize(24);
-    editor.setOption("selectionStyle", "text");		//行选择方式,"line","text",，默认"line"
+    //ace_editor.focus();
 
-    editor.getSession().setUseWrapMode(true);		//代码折叠，默认false
-    editor.renderer.setShowPrintMargin(true);		//显示打印边界，默认false
-    editor.setHighlightActiveLine(false);			//强调所选行，默认true
-    editor.setHighlightSelectedWord(true);			//全文强调所选词，默认true
+	ace_editor.setFontSize(18);
+	//var fontsize = ace_editor.getFontSize();
+	ace_editor.getSession().setTabSize(4);
+    ace_editor.setOption("selectionStyle", "line");		//行选择方式,"line","text",，默认"line"
+
+    ace_editor.getSession().setUseWrapMode(true);		//代码折叠，默认false
+    ace_editor.renderer.setShowPrintMargin(true);		//显示打印边界，默认false
+    ace_editor.renderer.setShowGutter(true);            //显示行号，默认true
+    ace_editor.setHighlightActiveLine(false);			//强调所选行，默认true
+    ace_editor.setHighlightSelectedWord(true);			//全文强调所选词，默认true
+    ace_editor.setValue("#ACE editor");			        //text
+
+    var ace_output = ace.edit('ace_output');
+    ace_output.setTheme('ace/theme/chrome');
+    ace_output.getSession().setMode('ace/mode/text');
+    ace_output.setFontSize(14);
+    ace_output.renderer.setShowPrintMargin(false);
+    ace_output.renderer.setShowGutter(false);
+    ace_output.setValue("#ACE Output");			        //text
 
 	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
     // create a simple selection status indicator
-    var statusBar = new StatusBar(editor, document.getElementById("statusBar"));
+    var ace_statusBar = new StatusBar(ace_editor, document.getElementById("ace_statusBar"));
 </script>
+<script>
+    $("#ace_editor").focus(function(){
+        document.activeElement.blur();
+    });
 
 
+</script>
+<!--
 <script src="./static/pyeditor/show_python_source.js"></script>
+-->
 </body>
 </html>
