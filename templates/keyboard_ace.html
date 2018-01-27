@@ -47,7 +47,7 @@
 
         #container_editor {
             width: 99.9%;
-            height: 70%;
+            height: 50%;
             overflow: auto;
             position: relative;
             background-color: #fff;
@@ -57,10 +57,21 @@
 
         #container_output {
             width: 99.9%;
-            height: 25%;
+            height: 20%;
             overflow: auto;
             position: relative;
             background-color: #fff;
+            border: 1px solid;
+            border-color:#ebebeb;
+        }
+        #container_keyboard {
+            width: 99.9%;
+            height: 20%;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid;
+            border-color:#ebebeb;
         }
 
         #container_top {
@@ -145,6 +156,8 @@
 
             <div id="container_output">
                 <div id="ace_output"></div>
+            </div>
+            <div id="container_keyboard">
                 <textarea name="keyboard" id="keyboard"></textarea>
             </div>
         </div>
@@ -173,7 +186,7 @@
         enableLiveAutocompletion: true 				//自动完成
     });
 
-    ace_editor.focus();
+    //ace_editor.focus();
 
 	ace_editor.setFontSize(14);
 	ace_editor.getSession().setTabSize(4);
@@ -203,6 +216,9 @@
         document.activeElement.blur();
     });
     $("#ace_output").focus(function(){
+        document.activeElement.blur();
+    });
+    $("#keyboard").focus(function(){
         document.activeElement.blur();
     });
 
