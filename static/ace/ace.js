@@ -13267,17 +13267,17 @@ Editor.$uid = 0;
     this.onFocus = function(e) {
         if (this.$isFocused)
             return;
-        this.$isFocused = true;
-        this.renderer.showCursor();
-        this.renderer.visualizeFocus();
+        //this.$isFocused = true;
+        //this.renderer.showCursor();
+        //this.renderer.visualizeFocus();
         //this._emit("focus", e);       //uneable sys keyboard fo mobile
     };
     this.onBlur = function(e) {
         if (!this.$isFocused)
             return;
-        this.$isFocused = false;
-        this.renderer.hideCursor();
-        this.renderer.visualizeBlur();
+        //this.$isFocused = false;
+        //this.renderer.hideCursor();
+        //this.renderer.visualizeBlur();
         //this._emit("blur", e);
     };
 
