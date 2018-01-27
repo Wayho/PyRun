@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CodeMirror demo</title>
+
+    <link href="https://cdn.bootcss.com/codemirror/5.33.0/codemirror.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/foldgutter.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/codemirror/5.33.0/theme/eclipse.min.css" rel="stylesheet">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/codemirror.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/foldcode.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/foldgutter.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/brace-fold.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/indent-fold.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/fold/comment-fold.js"></script>
+
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/edit/matchbrackets.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/addon/selection/active-line.js"></script>
+    <script src="https://cdn.bootcss.com/codemirror/5.33.0/mode/python/python.js"></script>
+
+
+    <style type="text/css" media="screen">
+    .CodeMirror {border: 0px solid black; font-size:14px}
+        * {
+            margin: 0;
+            padding: 0;
+            outline: none;
+            border-radius: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #ebebeb;
+        }
+
+        #container {
+            overflow: auto;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0px;
+        }
+
+        #container_editor {
+            width: 99.9%;
+            height: 70%;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+            border: 1px solid;
+            border-color:#ebebeb;
+        }
+
+        #container_output {
+            width: 99.9%;
+            height: 25%;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+        }
+
+        #container_top {
+            width: 99.9%;
+            height: 24px;
+            overflow: auto;
+            position: relative;
+            background-color: #fff;
+            float: top;
+        }
+
+        #container_toolsbar {
+            width: 59.9%;
+            height: 99.9%;
+            overflow: auto;
+            position: relative;
+            background-color: #ebebeb;
+            color: gray;
+            float: left;
+        }
+
+        #container_statusbar {
+            width: 40%;
+            height: 99.9%;
+            overflow: auto;
+            position: relative;
+            background-color: #ebebeb;
+            color: gray;
+            float: left;
+        }
+
+        #codemirror_editor,
+        #codemirror_output{
+            height: 99.9%;
+            width: 99.9%;
+            overflow:auto;
+        }
+
+  </style>
+</head>
+
+<body>
+        <div id="container">
+			<div id="container_top">
+                <div id="container_toolsbar">
+                    <div id="ace_toolsBar">
+                        <i class="fa fa-play fa-1g" onclick="return submit_run()">Run</i>
+                        <i class="fa fa-file-o fa-1g" onclick="return submit_new()">New</i>
+                        <i class="fa fa-folder-open-o fa-1g" onclick="return submit_open()">Open</i>
+                        <i class="fa fa-save fa-1g" onclick="return submit_save()">Save</i>
+                        <i class="fa fa-plus-square fa-1g" onclick="submit_font()">Font</i>
+                        <a href="shell" target="_blank"><i class="fa fa-linux fa-1g">Shell</i></a>
+                        <a href="osinfo" target="_blank"><i class="fa fa-desktop fa-1g">Info</i></a>
+                        <a href="piplist" target="_blank"><i class="fa fa-inbox fa-1g">Lib</i></a>
+                        <a href="help" target="_blank"><i class="fa fa-hand-o-right fa-1g">Help</i></a>
+                    </div>
+                </div>
+                <div id="container_statusbar">
+                    <div id="ace_statusBar">PyRun -- Run Python online</div>
+                </div>
+            </div>
+
+            <div id="container_editor">
+                <textarea id="codemirror_editor" name="codemirror_editor" rows="30" cols="20"></textarea>
+            </div>
+
+            <div id="container_output">
+                <textarea id="codemirror_output" name="codemirror_output"></textarea>
+            </div>
+        </div>
+    <form>
+
+    </form>
+<script>
+    var codemirror_editor = CodeMirror.fromTextArea(document.getElementById("codemirror_editor"), {
+            lineNumbers: true,
+            styleActiveLine: true,
+            matchBrackets: true,
+            mode: "python",
+            viewportMargin: Infinity,           //全文渲染
+            inputStyle:"contenteditable",
+            lineWrapping:true,
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+        });
+    codemirror_editor.setOption("theme", "eclipse");
+    codemirror_editor.setSize('auto','99.9%');
+    codemirror_editor.setValue("# coding: utf-8\n# Local import\nfrom proxy import GetHtml       # Local proxy requests\ndef Get_Douban():\n        print '欢迎使用PyRun'\nGet_Douban()");
+
+    var codemirror_output = CodeMirror.fromTextArea(document.getElementById("codemirror_output"), {
+            lineNumbers: false,
+            styleActiveLine: false,
+            matchBrackets: false
+
+        });
+    //codemirror_output.setOption("theme", "eclipse");
+    codemirror_output.setSize('auto','99.9%');
+    codemirror_output.setValue("Codemirror output");
+
+</script>
+</body>
+</html>
