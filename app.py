@@ -153,7 +153,7 @@ def ace():
 	return render_template('ace.html')
 
 @app.route('/key')
-def ace():
+def keyboard_ace():
 	return render_template('keyboard_ace.html')
 
 @sockets.route('/echo')
