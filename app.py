@@ -148,6 +148,10 @@ def ajaxform():
 		return render_template('ajaxform.html')
 
 ################# A Static ACE Editor for test ###########################
+@app.route('/codemirror')
+def codemirror():
+	return render_template('codemirror.html')
+
 @app.route('/ace')
 def ace():
 	return render_template('ace.html')
