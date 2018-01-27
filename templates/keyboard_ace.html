@@ -206,6 +206,8 @@
     ace_output.renderer.setShowPrintMargin(false);
     ace_output.renderer.setShowGutter(false);
     ace_output.setValue("#ACE Output");			        //text
+    ace_output.setReadOnly(true);
+    ace_output.focus();
 
 	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
     // create a simple selection status indicator
@@ -249,7 +251,7 @@
         // Prepare for the next go around
         prevEndIndx = last.end;
         // Why not, since we're skipping 'accept' anyway? Will be easier for people using keyboards.
-        ace_editor.focus();
+        //ace_editor.focus();
 
         return keyboard;
     };  // End processInput()
