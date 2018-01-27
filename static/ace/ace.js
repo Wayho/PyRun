@@ -1956,7 +1956,7 @@ var TextInput = function(parentNode, host) {
     });
     event.addListener(text, "focus", function(e) {
         isFocused = true;
-        host.onFocus(e);
+        //host.onFocus(e);
         resetSelection();
     });
     this.focus = function() {
@@ -2016,7 +2016,7 @@ var TextInput = function(parentNode, host) {
 
     resetValue();
     if (isFocused)
-        host.onFocus();
+        ;//host.onFocus();
 
 
     var isAllSelected = function(text) {
@@ -2426,7 +2426,7 @@ var TextInput = function(parentNode, host) {
     });
     event.addListener(text, "focus", function(e) {
         isFocused = true;
-        host.onFocus(e);
+        //host.onFocus(e);
         resetSelection();
     });
     this.focus = function() {
@@ -2493,7 +2493,7 @@ var TextInput = function(parentNode, host) {
 
     resetValue();
     if (isFocused)
-        host.onFocus();
+        ;//host.onFocus();
 
 
     var isAllSelected = function(text) {
