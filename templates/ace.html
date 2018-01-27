@@ -159,13 +159,14 @@
     ace_output.renderer.setShowPrintMargin(false);
     ace_output.renderer.setShowGutter(false);
     ace_output.setValue("#ACE Output");			        //text
+    ace_output.setReadOnly(true);
 
 	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
     // create a simple selection status indicator
     var ace_statusBar = new StatusBar(ace_editor, document.getElementById("ace_statusBar"));
 </script>
 <script>
-    $("#ace_editor").focus(function(){
+    $("#ace_text-input").focus(function(){
         document.activeElement.blur();
     });
 
