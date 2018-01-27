@@ -166,7 +166,10 @@
     var ace_statusBar = new StatusBar(ace_editor, document.getElementById("ace_statusBar"));
 </script>
 <script>
-    $("#ace_text-input").focus(function(){
+    $("#ace_output").focus(function(){
+        document.activeElement.blur();
+    });
+    ace_editor.getSession().selection.on('changeCursor', function(e) {
         document.activeElement.blur();
     });
 
