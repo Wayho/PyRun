@@ -104,7 +104,7 @@
             <div id="ace_editor"></div>
         </div>
         <div id="container_output">
-            <div id="ace_output"></div>
+
         </div>
 
 
@@ -153,6 +153,7 @@
     ace_editor.setHighlightSelectedWord(true);			//全文强调所选词，默认true
     ace_editor.setValue("#ACE editor\nprint 123");			        //text
 
+    /*
     var ace_output = ace.edit('ace_output');
     ace_output.setTheme('ace/theme/chrome');
     ace_output.getSession().setMode('ace/mode/text');
@@ -161,6 +162,7 @@
     ace_output.renderer.setShowGutter(false);
     ace_output.setValue("#ACE Output\na\nb\nc");			        //text
     ace_output.setReadOnly(true);
+    */
 
 	var StatusBar = ace.require("ace/ext/statusbar").StatusBar;
     // create a simple selection status indicator
@@ -168,6 +170,9 @@
 </script>
 <script>
     $("#ace_output").focus(function(){
+        document.activeElement.blur();
+    });
+    $("#ace_editor_input").focus(function(){
         document.activeElement.blur();
     });
     ace_editor.getSession().selection.on('changeCursor', function(e) {
