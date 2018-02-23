@@ -14,3 +14,8 @@ pandas>=0.21.0
 BeautifulSoup==3.2.1
 BeautifulSoup4>=4.6.0
 python-dateutil>=2.6.1
+
+autobahn==17.9.3
+twisted==17.9.0
+pyopenssl==17.3.0
+service_identity==17.0.0
